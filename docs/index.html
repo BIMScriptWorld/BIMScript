@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIMScript: Material-Aware Structured Scene Programs for BIM Ingestion</title>
+<meta name="description" content="BIMScript turns a scan into a material- and condition-aware BIM program: a structured scene language whose every command maps one-to-one onto a native Revit/IFC object.">
+<meta property="og:title" content="BIMScript: Material-Aware Structured Scene Programs for BIM Ingestion">
+<meta property="og:description" content="A structured scene language in which every element carries geometry, material, and condition -- and maps one-to-one onto a native Revit/IFC object.">
+<meta property="og:image" content="https://BIMScriptWorld.github.io/BIMScript/static/images/teaser_c_layout3d.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="static/images/icon.png">
+<link rel="apple-touch-icon" href="static/images/icon_1024.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;600&display=swap">
+<link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <img src="static/images/bimscript_icon_full.jpg?v=2" alt="BIMScript" class="bs-icon">
+      <h1 class="title is-2 bs-title">BIMScript: Material-Aware Structured<br>Scene Programs for BIM Ingestion</h1>
+
+      <div class="is-size-5 bs-authors">
+        <span class="author-block"><a href="https://prakashknaikade.github.io/" target="_blank">Prakash Kondibhau Naikade</a><sup>1,2,3</sup></span>,
+        <span class="author-block"><a href="https://vbn.aau.dk/en/persons/tbm" target="_blank">Thomas B. Moeslund</a><sup>1,2,3</sup></span>,
+        <span class="author-block"><a href="https://vbn.aau.dk/en/persons/anmo" target="_blank">Andreas M&oslash;gelmose</a><sup>1,2,3</sup></span>
+      </div>
+      <div class="is-size-6 bs-affil">
+        <sup>1</sup>AI:Xpertise Lab, Aalborg University &nbsp;&middot;&nbsp;
+        <sup>2</sup>Visual Analysis and Perception Laboratory, Aalborg University &nbsp;&middot;&nbsp;
+        <sup>3</sup>Pioneer Centre for Artificial Intelligence
+      </div>
+
+      <div class="bs-buttons">
+        <a class="button is-rounded is-dark" href="https://arxiv.org/abs/ARXIV_ID" target="_blank">
+          <span class="icon"><i class="ai ai-arxiv"></i><i class="fas fa-file-lines"></i></span><span>arXiv</span></a>
+        <a class="button is-rounded is-dark" href="https://arxiv.org/pdf/ARXIV_ID" target="_blank">
+          <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span></a>
+        <a class="button is-rounded is-dark" href="#video">
+          <span class="icon"><i class="fas fa-play"></i></span><span>Video</span></a>
+        <span class="button is-rounded is-dark is-soon">
+          <span class="icon"><i class="fab fa-github"></i></span><span>Code &mdash; coming soon</span></span>
+        <span class="button is-rounded is-dark is-soon">
+          <span class="icon"><i class="fas fa-cubes"></i></span><span>Revit add-in &mdash; coming soon</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ NAV ============================ -->
+<nav class="bs-nav" id="bs-nav">
+  <div class="container is-max-desktop">
+    <a href="#video">Video</a><a href="#results">Results</a><a href="#program">Program</a>
+    <a href="#method">Method</a><a href="#corpus">Corpus</a><a href="#bim">BIM</a>
+    <a href="#numbers">Numbers</a><a href="#applications">Applications</a>
+    <a href="#limitations">Limitations</a><a href="#code">Code &amp; data</a><a href="#cite">Cite</a>
+  </div>
+</nav>
+
+<!-- ============================ TEASER ============================ -->
+<section class="section bs-tight">
+  <div class="container is-max-desktop">
+    <div class="bs-teaser-grid">
+      <figure><img src="static/images/teaser_a_pointcloud3d.jpg?v=2" alt="Input scan">
+        <figcaption>Point cloud + egocentric keyframes</figcaption></figure>
+
+      <div class="bs-mid">
+        <div class="bs-mid-label">BIMScript</div>
+        <svg class="bs-net" viewBox="0 0 74 46" aria-label="encoder-decoder">
+          <g stroke="#c9d2de" stroke-width="1">
+            <line x1="12" y1="10" x2="37" y2="6"/><line x1="12" y1="10" x2="37" y2="18"/>
+            <line x1="12" y1="23" x2="37" y2="6"/><line x1="12" y1="23" x2="37" y2="28"/>
+            <line x1="12" y1="36" x2="37" y2="18"/><line x1="12" y1="36" x2="37" y2="40"/>
+            <line x1="37" y1="6"  x2="62" y2="10"/><line x1="37" y1="18" x2="62" y2="10"/>
+            <line x1="37" y1="28" x2="62" y2="23"/><line x1="37" y1="40" x2="62" y2="36"/>
+            <line x1="37" y1="18" x2="62" y2="23"/><line x1="37" y1="28" x2="62" y2="36"/>
+          </g>
+          <g fill="#242a33">
+            <circle cx="12" cy="10" r="3"/><circle cx="12" cy="23" r="3"/><circle cx="12" cy="36" r="3"/>
+            <circle cx="37" cy="6"  r="3"/><circle cx="37" cy="18" r="3"/>
+            <circle cx="37" cy="28" r="3"/><circle cx="37" cy="40" r="3"/>
+            <circle cx="62" cy="10" r="3"/><circle cx="62" cy="23" r="3"/><circle cx="62" cy="36" r="3"/>
+          </g>
+        </svg>
+        <div class="bs-arrow"><i class="fas fa-arrow-right-long"></i></div>
+        <img class="bs-icon" src="static/images/bimscript_icon_full.jpg?v=2" alt="BIMScript">
+      </div>
+
+      <figure><img src="static/images/teaser_c_layout3d.jpg?v=2" alt="Predicted BIM">
+        <figcaption>A program &mdash; every element with material and condition</figcaption></figure>
+    </div>
+      <div class="bs-legend">
+        <span><i style="--c:#9c6231"></i>wood paneling</span>
+        <span><i style="--c:#f06292"></i>wallpaper</span>
+        <span><i style="--c:#cf9226"></i>painted plaster</span>
+        <span><i style="--c:#f7c59f"></i>door</span>
+        <span><i style="--c:#53f4ff"></i>window</span>
+      </div>
+  </div>
+</section>
+
+<!-- ============================ TL;DR ============================ -->
+<section class="section bs-tight">
+  <div class="container is-max-desktop">
+    <div class="columns is-variable is-4">
+      <div class="column"><div class="bs-card">
+        <div class="bs-card-k">What</div>
+        <p>Every wall, door and window carries a <b>material</b> and a <b>condition</b> token, supervised by a
+        VLM-distilled material passport over <b>1.9M elements</b>.</p></div></div>
+      <div class="column"><div class="bs-card">
+        <div class="bs-card-k">Fast</div>
+        <p>Decoding is bound by <b>overhead, not compute</b>. An output-exact CUDA-graph decoder cuts
+        6.40&rarr;1.91&nbsp;ms/step (<b>3.4&times;</b>), plus grammar-parallel draft-and-verify.</p></div></div>
+      <div class="column"><div class="bs-card">
+        <div class="bs-card-k">Exactly where</div>
+        <p>A bounded <b>sub-bin offset head</b> escapes the 5&nbsp;cm token grid, doubling F1@2&nbsp;cm and
+        locating where the residual error really lives.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ABSTRACT ============================ -->
+<section class="section bs-tight">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">Abstract</h2>
+    <div class="content bs-abstract">
+      <p>Structured-language models such as SceneScript reconstruct a scene as a short program of parametric
+      commands, an editable and semantically explicit representation. We ask three questions that stand between
+      such models and automated ingestion of existing buildings into BIM tools, studied here on synthetic scans:
+      <i>what</i> is the scene made of, <i>how fast</i> can it be produced, and <i>exactly where</i> is each
+      element. BIMScript answers all three within one grammar. First, we extend the layout language with
+      per-element <i>material</i> and <i>condition</i> attributes, supervised by a vision-language-model
+      material-passport corpus we build over 100k synthetic scenes (1.9M pseudo-labeled elements), and route
+      image appearance to the material tokens through a lifted-feature encoder. Second, we show that
+      autoregressive decoding of these programs is dominated not by compute but by kernel-launch and
+      host-synchronization overhead, and remove it with an output-exact CUDA-graph decoder (3.4&times;) plus a
+      grammar-parallel, tolerance-verified draft-and-verify scheme that exploits the deterministic entity schema.
+      Third, we address the model's 5&nbsp;cm token-grid granularity with training-free geometric snapping and a
+      hybrid discrete&ndash;continuous decoder head that regresses a sub-bin offset. Because each command maps
+      one-to-one onto a native Revit object, we validate direct ingestion end to end with a working add-in and its
+      IFC4 export, and the program's language form supports LLM-driven, sustainability-aware reasoning over the
+      built asset.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ VIDEO ============================ -->
+<section class="section bs-tight" id="video">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">Video</h2>
+    <div class="bs-video-placeholder">
+      <i class="fas fa-play-circle"></i>
+      <p>Project video coming soon.</p>
+    </div>
+    <!-- When ready, replace the block above with:
+    <div class="bs-video"><iframe src="https://www.youtube.com/embed/VIDEO_ID"
+      title="BIMScript" frameborder="0" allowfullscreen></iframe></div>
+    -->
+  </div>
+</section>
+
+<!-- ============================ RESULTS (slider) ============================ -->
+<section class="section bs-tight" id="results">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">Scan2BIM</h2>
+    <p class="has-text-centered bs-sub">Drag the handle. Left is the input point cloud; right is the program
+      BIMScript decodes from it, with walls colored by predicted material and openings by role.
+      Uncurated validation scenes.</p>
+
+    <div class="bs-slider" id="slider">
+      <img class="bs-img-bim"  id="imgBim"  src="static/images/bim_84289.jpg?v=2"  alt="Predicted BIM">
+      <div class="bs-clip" id="clip"><img class="bs-img-scan" id="imgScan" src="static/images/scan_84289.jpg?v=2" alt="Input scan"></div>
+      <div class="bs-handle" id="handle"><span><i class="fas fa-left-right"></i></span></div>
+      <div class="bs-tag bs-tag-l">Scan</div><div class="bs-tag bs-tag-r">BIMScript</div>
+    </div>
+
+    <div class="bs-scenes" id="scenes">
+      <button class="is-active" data-id="84289">Scene 84289</button>
+      <button data-id="52361">Scene 52361</button>
+      <button data-id="58962">Scene 58962</button>
+      <button data-id="95940">Scene 95940</button>
+    </div>
+      <div class="bs-legend">
+        <span><i style="--c:#9c6231"></i>wood paneling</span>
+        <span><i style="--c:#f06292"></i>wallpaper</span>
+        <span><i style="--c:#cf9226"></i>painted plaster</span>
+        <span><i style="--c:#43bd43"></i>tile</span>
+        <span><i style="--c:#f7c59f"></i>door</span>
+        <span><i style="--c:#53f4ff"></i>window</span>
+      </div>
+
+    <figure class="bs-fig">
+      <img src="static/images/qualitative.jpg?v=2" alt="Qualitative layout results">
+      <figcaption>Layout on the first three validation scenes (uncurated): ground truth, prediction, and a zoomed
+        corner inset. Doors are drawn as swing arcs, windows as blue sill glyphs.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ PROGRAM ============================ -->
+<section class="section bs-tight" id="program">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">The output is a program, not a mesh</h2>
+    <p class="has-text-centered bs-sub">Real decoder output. Every line is an object with parameters &mdash;
+      readable, diffable, editable, and one-to-one with a native BIM element.</p>
+    <pre class="bs-code"><code><span class="c">make_wall</span>,   id=0, a_x=-5.922, a_y=8.741, a_z=-0.002, b_x=-1.907, b_y=8.757, b_z=-0.002,
+             height=2.700, thickness=0.0, <span class="m">material=wood_paneling</span>, <span class="d">condition=good</span>
+<span class="c">make_wall</span>,   id=1, a_x=-1.907, a_y=8.757, a_z=-0.002, b_x=-1.875, b_y=1.616, b_z=-0.002,
+             height=2.700, thickness=0.0, <span class="m">material=wallpaper</span>,     <span class="d">condition=good</span>
+<span class="c">make_door</span>,   id=1000, wall0_id=1, position_x=-1.891, position_y=5.186, position_z=1.012,
+             width=0.920, height=2.024, <span class="m">material=composite</span>,       <span class="d">condition=new</span>
+<span class="c">make_window</span>, id=2000, wall0_id=0, position_x=-3.914, position_y=8.749, position_z=1.520,
+             width=1.480, height=1.200, <span class="m">material=aluminum</span>,        <span class="d">condition=good</span></code></pre>
+  </div>
+</section>
+
+<!-- ============================ METHOD ============================ -->
+<section class="section bs-tight" id="method">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">Method</h2>
+    <p class="bs-sub">A lifted-feature encoder routes image appearance into the sparse point encoder, so the
+      decoder conditions each material and condition token on the element's own geometry tokens through
+      self-attention. Three mechanisms then make decoding fast and precise:</p>
+    <figure class="bs-fig bs-arch">
+      <svg viewBox="0 0 1360 268" role="img" aria-label="BIMScript pipeline: point cloud and RGB keyframes to a lifted sparse-convolution encoder, transformer decoder, program, and Revit/IFC">
+        <!-- arrows: explicit heads (markers are unevenly supported) -->
+        <g stroke="#8c8c8c" stroke-width="1.7" fill="none">
+          <path d="M162,96 C202,96 198,126 224,131"/>
+          <path d="M162,184 C202,184 198,154 224,149"/>
+          <path d="M442,140 H502"/><path d="M692,140 H752"/><path d="M1042,140 H1102"/>
+        </g>
+        <g fill="#8c8c8c">
+          <path d="M224,131 l-9,-5 l1,10 z"/><path d="M224,149 l-9,5 l1,-10 z"/>
+          <path d="M508,140 l-10,-5 v10 z"/><path d="M758,140 l-10,-5 v10 z"/><path d="M1108,140 l-10,-5 v10 z"/>
+        </g>
+        <g stroke="#8c8c8c" stroke-width="1.6">
+          <rect x="10"   y="70"  width="152" height="52"  rx="6" fill="#f7f7f7"/>
+          <rect x="10"   y="158" width="152" height="52"  rx="6" fill="#f7f7f7"/>
+          <rect x="224"  y="88"  width="218" height="104" rx="6" fill="#ededff"/>
+          <rect x="502"  y="88"  width="190" height="104" rx="6" fill="#ffffd9"/>
+          <rect x="752"  y="88"  width="290" height="104" rx="6" fill="#ebffeb"/>
+          <rect x="1102" y="88"  width="178" height="104" rx="6" fill="#fff4e9"/>
+        </g>
+        <g font-size="17" fill="#1c2027" text-anchor="middle" font-family="'Noto Sans',sans-serif">
+          <text x="86"   y="102">Point Cloud</text>
+          <text x="86"   y="190">RGB Keyframes</text>
+          <text x="333"  y="134">Lifted Sparse-<tspan x="333" dy="23">Convolution Encoder</tspan></text>
+          <text x="597"  y="134">Transformer<tspan x="597" dy="23">Decoder</tspan></text>
+          <text x="1191" y="134">Revit / IFC<tspan x="1191" dy="23">object model</tspan></text>
+          <text x="897"  y="134" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="14">make_wall &#8230;<tspan x="897" dy="23">material=, condition=</tspan></text>
+        </g>
+        <g font-size="15" font-weight="700" text-anchor="middle" font-family="'Noto Sans',sans-serif">
+          <rect x="222" y="206" width="222" height="28" rx="5" fill="#e6e6ff"/>
+          <text x="333" y="225" fill="#00008c"><tspan font-style="italic">what</tspan>: material tokens</text>
+          <rect x="462" y="34"  width="270" height="28" rx="5" fill="#f3e6ff"/>
+          <text x="597" y="53"  fill="#46008c"><tspan font-style="italic">fast</tspan>: GraphStep + SchemaDraft</text>
+          <rect x="518" y="206" width="158" height="28" rx="5" fill="#ffe6e6"/>
+          <text x="597" y="225" fill="#8c0000"><tspan font-style="italic">where</tspan>: SubBin</text>
+        </g>
+      </svg>
+      <figcaption>BIMScript overview. A lifted-feature encoder routes image appearance into the point encoder, so
+        the decoder can condition each material and condition token on the element's own geometry tokens. Decoding
+        is accelerated by <i>GraphStep</i> and <i>SchemaDraft</i> and refined below the token grid by <i>SubBin</i>,
+        and every emitted command maps one-to-one onto a native Revit/IFC object.</figcaption>
+    </figure>
+
+    <div class="columns is-variable is-4 bs-mech">
+      <div class="column"><div class="bs-card">
+        <div class="bs-card-k">GraphStep</div>
+        <p>The whole decode step captured in one CUDA graph &mdash; zero Python, zero host sync.
+          <b>6.40&rarr;1.91&nbsp;ms/step</b>, output-exact, no retraining.</p></div></div>
+      <div class="column"><div class="bs-card">
+        <div class="bs-card-k">SchemaDraft</div>
+        <p>A command token fixes the <i>types</i> of all remaining slots, so we draft them in one pass with an
+          <code>[INFILL]</code> embedding and verify. <b>51%</b> accepted, <b>1.36&times;</b> wall clock.</p></div></div>
+      <div class="column"><div class="bs-card">
+        <div class="bs-card-k">SubBin</div>
+        <p>A bounded within-bin offset head lifts coordinates off the 5&nbsp;cm grid.
+          <b>F1@2&nbsp;cm 0.034&rarr;0.071</b>.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CORPUS ============================ -->
+<section class="section bs-tight" id="corpus">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">A material passport at corpus scale</h2>
+    <p class="bs-sub">Synthetic scenes give exact geometry but no material labels. For every element we gather the
+      RGB observations that project onto it and prompt a vision-language model on the resulting crops. Two further
+      cues are computed independently and stored beside the label &mdash; not to supply it, but to measure how far
+      it can be trusted.</p>
+    <figure class="bs-fig"><img src="static/images/extraction.jpg?v=2" alt="Material passport extraction pipeline">
+      <figcaption>Surface points are associated to elements, observing keyframes are projected to cut per-element
+        crops, and the fused label is written back as a material- and condition-annotated floor plan.</figcaption></figure>
+    <div class="bs-stats">
+      <div><b>99,990</b><span>scenes</span></div>
+      <div><b>1,900,908</b><span>elements</span></div>
+      <div><b>14</b><span>materials</span></div>
+      <div><b>5</b><span>conditions</span></div>
+      <div><b>0</b><span>join failures</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BIM ============================ -->
+<section class="section bs-tight" id="bim">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">Straight into Revit and IFC</h2>
+    <p class="bs-sub">A BIMScript program is already an object model. Our pyRevit add-in creates <i>native</i>
+      Revit walls with one wall type per predicted material, hosted door and window instances, and the material,
+      condition and source id as shared parameters on every element. The same document exports to IFC4.</p>
+    <figure class="bs-fig"><img src="static/images/revit_demo.jpg?v=2" alt="Decoded program ingested into Revit">
+      <figcaption>A decoded program after ingestion &mdash; native Revit walls of the auto-created type
+        <i>BIMScript&nbsp;-&nbsp;concrete</i>, each carrying its predicted attributes.</figcaption></figure>
+    <table class="table is-fullwidth bs-table">
+      <thead><tr><th>BIMScript</th><th>Revit API target</th><th>IFC entity / property set</th></tr></thead>
+      <tbody>
+        <tr><td><code>make_wall</code></td><td><code>Wall.Create</code> (curve, level, height)</td><td><code>IfcWall</code></td></tr>
+        <tr><td><code>make_door</code></td><td>hosted <code>FamilyInstance</code> on host wall</td><td><code>IfcDoor</code> + <code>IfcRelFillsElement</code></td></tr>
+        <tr><td><code>make_window</code></td><td>hosted <code>FamilyInstance</code> on host wall</td><td><code>IfcWindow</code> + <code>IfcRelFillsElement</code></td></tr>
+        <tr><td><code>material=&hellip;</code></td><td>wall/family-type material parameter</td><td><code>IfcMaterial</code> / <code>IfcMaterialLayerSet</code></td></tr>
+        <tr><td><code>condition=&hellip;</code></td><td>shared parameter (custom)</td><td>custom Pset (e.g. <code>Pset_Condition</code>)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ NUMBERS ============================ -->
+<section class="section bs-tight" id="numbers">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">Results</h2>
+    <p class="bs-sub">1,000-scene held-out test split, one greedy decode per scene. Layout is scored over all
+      ground-truth elements; attributes only over elements matched within 10&nbsp;cm, so coverage should be read
+      alongside them. Latency is batch&nbsp;1 with GraphStep on one L40S.</p>
+    <div class="table-container">
+    <table class="table is-fullwidth bs-table">
+      <thead><tr><th>Model</th><th>F1@5cm</th><th>AvgF1</th><th>Cov.</th>
+        <th>Mat. acc.</th><th>Cond. acc.</th><th>Params</th><th>s/scene</th></tr></thead>
+      <tbody>
+        <tr><td>SceneScript public ckpt</td><td>0.581</td><td>0.667</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>25.9M</td><td>1.47</td></tr>
+        <tr><td>BIMScript (40k)</td><td>0.577</td><td><b>0.676</b></td><td><b>0.701</b></td><td>0.629</td><td><b>0.842</b></td><td>58.4M</td><td>1.14</td></tr>
+        <tr><td>BIMScript<sup>+</sup> (60k)</td><td>0.576</td><td>0.669</td><td>0.699</td><td><b>0.639</b></td><td>0.840</td><td>58.5M</td><td><b>1.12</b></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="bs-note">Adding material and condition costs nothing in geometry: the material-aware model matches
+      the layout-only baseline on the same splits. BIMScript<sup>+</sup> folds the speed and precision fine-tunes
+      into a single checkpoint that serves plain decoding, draft-and-verify, and sub-bin refinement at once.</p>
+  </div>
+</section>
+
+<!-- ============================ APPLICATIONS ============================ -->
+<section class="section bs-tight" id="applications">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">Applications</h2>
+    <p class="bs-sub">Because a BIMScript program is an object model rather than a mesh, it drops into the tools
+      the AEC industry already runs on &mdash; and because it is <i>language</i>, it is equally readable by a
+      large language model.</p>
+    <div class="columns is-variable is-4">
+      <div class="column"><div class="bs-card">
+        <div class="bs-card-k">Scan2BIM</div>
+        <p>Turn a captured point cloud into an object-level building model automatically, replacing the manual
+          hand-tracing step of conventional scan-to-BIM.</p></div></div>
+      <div class="column"><div class="bs-card">
+        <div class="bs-card-k">Native Revit &amp; IFC</div>
+        <p>Programs ingest directly into Revit as native walls and hosted openings carrying material and
+          condition, and export to the open <b>IFC4</b> standard for exchange.</p></div></div>
+      <div class="column"><div class="bs-card">
+        <div class="bs-card-k">LLM-driven AEC</div>
+        <p>A compact, machine-readable inventory an LLM can reason over: embodied-carbon and life-cycle
+          assessment, material passports and circularity, maintenance triage, adaptive reuse.</p></div></div>
+    </div>
+
+    <figure class="bs-fig">
+      <img src="static/images/future_work_xrai.jpg?v=2" alt="XRAI4AEC pipeline linking BIM, digital twins and AEC workflows">
+      <figcaption>Proposed integrative XRAI4AEC pipeline linking BIM, DTs and multiple AEC workflows. The
+        pipeline begins with image and pointcloud acquisition from camera and LiDAR sensors, followed by advanced
+        radiance field reconstruction to generate high-LoD 3D building models. A BIM-Script representation is then
+        used to create semantically rich integrated BIM and DT models. Finally, a BIM-LLM trained on BIM-Script
+        data enables reasoning over sustainability-aware tasks including real-estate valuation, lifecycle
+        assessment (LCA), adaptive reuse and disassembly planning, circular-economy-driven waste reduction
+        strategies, and more. See our
+        <a href="https://prakashknaikade.github.io/publications/xrai4aec_survey/" target="_blank">XR/AI for AEC
+        survey</a> for the broader context.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ LIMITATIONS ============================ -->
+<section class="section bs-tight" id="limitations">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">Limitations</h2>
+    <div class="content bs-limits">
+      <ul>
+        <li>Supervision is <b>synthetic</b>, and its material labels are VLM-distilled pseudo-labels &mdash;
+          real-scan generalization and label denoising are open.</li>
+        <li>Condition is predicted at the level of &ldquo;is this the default state or not&rdquo;: the macro
+          average is carried almost entirely by <code>good</code>, and <code>worn</code> is not recovered.</li>
+        <li>Reproduction is audited against public artifacts, not a verified replication of SceneScript's
+          published system.</li>
+        <li>GraphStep is batch-1 and argmax by construction; SchemaDraft at &tau;=2 is tolerance-verified rather
+          than output-exact.</li>
+        <li>The Revit and IFC path is validated on programs decoded from synthetic scenes, not yet against
+          professional as-built modeling on real scans.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CODE ============================ -->
+<section class="section bs-tight" id="code">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">Code &amp; data</h2>
+    <div class="columns is-variable is-4">
+      <div class="column"><div class="bs-card bs-soon">
+        <div class="bs-card-k">BIMScript</div><p>Training, evaluation and decoding code.</p>
+        <span class="tag">coming soon</span></div></div>
+      <div class="column"><div class="bs-card bs-soon">
+        <div class="bs-card-k">Material passport</div><p>Extraction pipeline and the corpus.</p>
+        <span class="tag">coming soon</span></div></div>
+      <div class="column"><div class="bs-card bs-soon">
+        <div class="bs-card-k">BIMScript2Revit</div><p>pyRevit add-in and IFC4 export.</p>
+        <span class="tag">coming soon</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CITE ============================ -->
+<section class="section bs-tight" id="cite">
+  <div class="container is-max-desktop">
+    <h2 class="title is-4 has-text-centered">Citation</h2>
+    <pre class="bs-bibtex"><code>@article{naikade2026bimscript,
+  title   = {BIMScript: Material-Aware Structured Scene Programs for BIM Ingestion},
+  author  = {Naikade, Prakash Kondibhau and Moeslund, Thomas B. and M{\o}gelmose, Andreas},
+  journal = {arXiv preprint arXiv:ARXIV_ID},
+  year    = {2026}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer bs-footer">
+  <div class="container is-max-desktop has-text-centered">
+    <p>Page source in <code>docs/</code> of this repository. Template adapted from the
+      <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">Nerfies</a> academic project page,
+      licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.</p>
+  </div>
+</footer>
+
+<script src="static/js/index.js"></script>
+</body>
+</html>
