@@ -32,17 +32,23 @@ body{font-family:'Noto Sans','Google Sans',system-ui,sans-serif;color:var(--ink)
 .bs-nav a:hover{color:var(--accent);}
 
 /* ---------- teaser ---------- */
-.bs-teaser-grid{display:grid;grid-template-columns:1fr 132px 1fr;gap:1.1rem;align-items:center;}
-/* scoped to figure so it cannot hit the .bs-icon in the middle column:
-   ".bs-teaser-grid img" (0,1,1) outranks ".bs-icon" (0,1,0) and was
-   forcing width:100% onto a square icon with a fixed 92px height. */
-.bs-teaser-grid figure img{width:100%;border-radius:10px;background:var(--panel);display:block;}
-.bs-teaser-grid figure{margin:0;}
-.bs-teaser-grid figcaption{color:var(--muted);font-size:.86rem;text-align:center;margin-top:.55rem;line-height:1.45;}
+/* Mirrors the paper's teaser band: column 1 stacks the point cloud over the
+   egocentric keyframe strip, column 3 spans the same height. No rule here may
+   select a bare `img`, or it would also hit the .bs-icon in the middle column
+   (that collision is what previously stretched the icon). */
+.bs-teaser-grid{display:grid;grid-template-columns:1fr 132px 1fr;gap:1.1rem;align-items:stretch;}
+.bs-col{display:flex;flex-direction:column;margin:0;min-width:0;}
+.bs-main{width:100%;border-radius:10px;background:var(--panel);display:block;}
+.bs-grow{flex:1 1 auto;min-height:0;object-fit:contain;}
+.bs-frames{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px;}
+.bs-frames img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;
+  display:block;background:var(--panel);}
+.bs-col figcaption{color:var(--muted);font-size:.86rem;text-align:center;
+  margin-top:.55rem;line-height:1.45;}
 
-/* middle column: label / net / arrow / icon -- deliberately small so the two
-   renders stay the subject and the pipeline reads as a caption between them */
-.bs-mid{display:flex;flex-direction:column;align-items:center;gap:.34rem;}
+/* middle column: label / net / arrow / icon, vertically centred on the band */
+.bs-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.4rem;align-self:center;}
 .bs-mid-label{font-weight:700;font-size:.8rem;letter-spacing:.01em;color:var(--ink);}
 .bs-net{width:72px;height:auto;opacity:.85;}
 .bs-mid .bs-icon{width:92px;height:92px;margin-bottom:0;object-fit:contain;flex:none;}
@@ -51,6 +57,7 @@ body{font-family:'Noto Sans','Google Sans',system-ui,sans-serif;color:var(--ink)
   .bs-teaser-grid{grid-template-columns:1fr;}
   .bs-mid{flex-direction:row;justify-content:center;gap:.7rem;}
   .bs-arrow{transform:rotate(90deg);}
+  .bs-grow{flex:none;}
 }
 
 /* ---------- material legend ---------- */
@@ -105,9 +112,20 @@ body{font-family:'Noto Sans','Google Sans',system-ui,sans-serif;color:var(--ink)
 .bs-code .c{color:#7fb2ff;font-weight:600;}
 .bs-code .m{color:#e0913a;}
 .bs-code .d{color:#7fd18c;}
-.bs-table{font-size:.92rem;}
+/* Tables scroll horizontally rather than squashing. Bulma's .table-container
+   supplies overflow-x; the min-width is what stops `is-fullwidth` from
+   shrinking the table to fit and defeating the scroll on narrow screens. */
+.table-container{overflow-x:auto;-webkit-overflow-scrolling:touch;
+  border-radius:8px;max-width:100%;}
+.bs-table{font-size:.92rem;min-width:560px;}
+.bs-table-wide{min-width:680px;}
 .bs-table th{color:var(--muted);font-weight:600;border-bottom:2px solid var(--line)!important;}
-.bs-table td,.bs-table th{vertical-align:middle;}
+.bs-table td,.bs-table th{vertical-align:middle;white-space:nowrap;}
+.bs-table td:first-child,.bs-table th:first-child{white-space:normal;}
+@media(max-width:768px){
+  .bs-table{font-size:.82rem;}
+  .bs-table td,.bs-table th{padding:.4rem .5rem;}
+}
 .bs-note{color:var(--muted);font-size:.9rem;line-height:1.6;margin-top:.8rem;}
 .bs-limits li{color:#39424e;line-height:1.7;}
 .bs-stats{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:1.6rem;}
@@ -120,4 +138,18 @@ body{font-family:'Noto Sans','Google Sans',system-ui,sans-serif;color:var(--ink)
 
 /* ---------- pipeline figure ---------- */
 .bs-arch{margin:1.4rem 0 1.8rem;}
-.bs-arch svg{width:100%;height:auto;display:block;}
+.bs-arch-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.bs-arch svg{width:100%;min-width:660px;height:auto;display:block;}
+
+/* sub-heading above a table inside a section (spacing instead of a <br>) */
+.bs-subhead{margin-top:2.2rem!important;margin-bottom:.9rem!important;}
+
+/* ---------- teaser video row (two up) ---------- */
+.bs-videos{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:1.3rem;}
+.bs-videos figure{margin:0;min-width:0;}
+.bs-videos video{width:100%;height:auto;display:block;border-radius:10px;
+  background:var(--panel);}
+.bs-videos figcaption{color:var(--muted);font-size:.84rem;text-align:center;
+  margin-top:.5rem;line-height:1.45;}
+.bs-videos-note{color:var(--muted);font-size:.84rem;text-align:center;margin-top:.7rem;}
+@media(max-width:768px){.bs-videos{grid-template-columns:1fr;}}

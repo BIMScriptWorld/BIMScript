@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BIMScript: Material-Aware Structured Scene Programs for BIM Ingestion</title>
+<meta name="google-site-verification" content="r7kQZKpFugfcLYFKmXw2x6WeTqvzTsJZSEoBmKOpRNQ" />
 <meta name="description" content="BIMScript turns a scan into a material- and condition-aware BIM program: a structured scene language whose every command maps one-to-one onto a native Revit/IFC object.">
 <meta property="og:title" content="BIMScript: Material-Aware Structured Scene Programs for BIM Ingestion">
 <meta property="og:description" content="A structured scene language in which every element carries geometry, material, and condition -- and maps one-to-one onto a native Revit/IFC object.">
@@ -16,6 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;600&display=swap">
 <link rel="stylesheet" href="static/css/index.css">
+
 </head>
 <body>
 
@@ -40,9 +42,9 @@
       <div class="bs-buttons">
         <a class="button is-rounded is-dark" href="https://arxiv.org/abs/ARXIV_ID" target="_blank">
           <span class="icon"><i class="ai ai-arxiv"></i><i class="fas fa-file-lines"></i></span><span>arXiv</span></a>
-        <a class="button is-rounded is-dark" href="https://arxiv.org/pdf/ARXIV_ID" target="_blank">
+        <a class="button is-rounded is-dark" href="paper/BIMScript_arxiv_2026.pdf" target="_blank">
           <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span></a>
-        <a class="button is-rounded is-dark" href="#video">
+        <a class="button is-rounded is-dark" href="https://youtu.be/EnbtevDCsKw">
           <span class="icon"><i class="fas fa-play"></i></span><span>Video</span></a>
         <span class="button is-rounded is-dark is-soon">
           <span class="icon"><i class="fab fa-github"></i></span><span>Code &mdash; coming soon</span></span>
@@ -56,7 +58,7 @@
 <!-- ============================ NAV ============================ -->
 <nav class="bs-nav" id="bs-nav">
   <div class="container is-max-desktop">
-    <a href="#video">Video</a><a href="#results">Results</a><a href="#program">Program</a>
+    <a href="#abstract">Abstract</a><a href="#video">Video</a><a href="#results">Results</a><a href="#program">Program</a>
     <a href="#method">Method</a><a href="#corpus">Corpus</a><a href="#bim">BIM</a>
     <a href="#numbers">Numbers</a><a href="#applications">Applications</a>
     <a href="#limitations">Limitations</a><a href="#code">Code &amp; data</a><a href="#cite">Cite</a>
@@ -67,8 +69,15 @@
 <section class="section bs-tight">
   <div class="container is-max-desktop">
     <div class="bs-teaser-grid">
-      <figure><img src="static/images/teaser_a_pointcloud3d.jpg?v=2" alt="Input scan">
-        <figcaption>Point cloud + egocentric keyframes</figcaption></figure>
+      <figure class="bs-col">
+        <img class="bs-main" src="static/images/teaser_a_pointcloud3d.jpg?v=2" alt="Input point cloud">
+        <div class="bs-frames">
+          <img src="static/images/frame_0.jpg?v=2" alt="Egocentric keyframe 1">
+          <img src="static/images/frame_1.jpg?v=2" alt="Egocentric keyframe 2">
+          <img src="static/images/frame_2.jpg?v=2" alt="Egocentric keyframe 3">
+        </div>
+        <figcaption>Point cloud + egocentric keyframes</figcaption>
+      </figure>
 
       <div class="bs-mid">
         <div class="bs-mid-label">BIMScript</div>
@@ -92,8 +101,10 @@
         <img class="bs-icon" src="static/images/bimscript_icon_full.jpg?v=2" alt="BIMScript">
       </div>
 
-      <figure><img src="static/images/teaser_c_layout3d.jpg?v=2" alt="Predicted BIM">
-        <figcaption>A program &mdash; every element with material and condition</figcaption></figure>
+      <figure class="bs-col">
+        <img class="bs-main bs-grow" src="static/images/teaser_c_layout3d.jpg?v=2" alt="Predicted BIM">
+        <figcaption>A program &mdash; every element with material and condition</figcaption>
+      </figure>
     </div>
       <div class="bs-legend">
         <span><i style="--c:#9c6231"></i>wood paneling</span>
@@ -102,6 +113,20 @@
         <span><i style="--c:#f7c59f"></i>door</span>
         <span><i style="--c:#53f4ff"></i>window</span>
       </div>
+
+      <div class="bs-videos">
+        <figure>
+          <video src="static/videos/wipe_28395.mp4" poster="static/images/wipe_28395_poster.jpg"
+                 autoplay loop muted playsinline preload="metadata"></video>
+          <figcaption>Scene 28395 &mdash; four materials recovered</figcaption>
+        </figure>
+        <figure>
+          <video src="static/videos/wipe_84289.mp4" poster="static/images/wipe_84289_poster.jpg"
+                 autoplay loop muted playsinline preload="metadata"></video>
+          <figcaption>Scene 84289 &mdash; every element recovered</figcaption>
+        </figure>
+      </div>
+      <p class="bs-videos-note">Decoded Programs</p>
   </div>
 </section>
 
@@ -126,7 +151,7 @@
 </section>
 
 <!-- ============================ ABSTRACT ============================ -->
-<section class="section bs-tight">
+<section class="section bs-tight" id="abstract">
   <div class="container is-max-desktop">
     <h2 class="title is-4 has-text-centered">Abstract</h2>
     <div class="content bs-abstract">
@@ -154,14 +179,12 @@
 <section class="section bs-tight" id="video">
   <div class="container is-max-desktop">
     <h2 class="title is-4 has-text-centered">Video</h2>
-    <div class="bs-video-placeholder">
-      <i class="fas fa-play-circle"></i>
-      <p>Project video coming soon.</p>
-    </div>
-    <!-- When ready, replace the block above with:
-    <div class="bs-video"><iframe src="https://www.youtube.com/embed/VIDEO_ID"
-      title="BIMScript" frameborder="0" allowfullscreen></iframe></div>
-    -->
+    <div class="bs-video"><iframe
+      src="https://www.youtube-nocookie.com/embed/EnbtevDCsKw"
+      title="BIMScript: Material-Aware Structured Scene Programs for BIM Ingestion"
+      loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen></iframe></div>
   </div>
 </section>
 
@@ -228,6 +251,7 @@
       decoder conditions each material and condition token on the element's own geometry tokens through
       self-attention. Three mechanisms then make decoding fast and precise:</p>
     <figure class="bs-fig bs-arch">
+      <div class="bs-arch-scroll">
       <svg viewBox="0 0 1360 268" role="img" aria-label="BIMScript pipeline: point cloud and RGB keyframes to a lifted sparse-convolution encoder, transformer decoder, program, and Revit/IFC">
         <!-- arrows: explicit heads (markers are unevenly supported) -->
         <g stroke="#8c8c8c" stroke-width="1.7" fill="none">
@@ -264,6 +288,7 @@
           <text x="597" y="225" fill="#8c0000"><tspan font-style="italic">where</tspan>: SubBin</text>
         </g>
       </svg>
+      </div>
       <figcaption>BIMScript overview. A lifted-feature encoder routes image appearance into the point encoder, so
         the decoder can condition each material and condition token on the element's own geometry tokens. Decoding
         is accelerated by <i>GraphStep</i> and <i>SchemaDraft</i> and refined below the token grid by <i>SubBin</i>,
@@ -318,6 +343,9 @@
     <figure class="bs-fig"><img src="static/images/revit_demo.jpg?v=2" alt="Decoded program ingested into Revit">
       <figcaption>A decoded program after ingestion &mdash; native Revit walls of the auto-created type
         <i>BIMScript&nbsp;-&nbsp;concrete</i>, each carrying its predicted attributes.</figcaption></figure>
+    
+    <h3 class="title is-5 has-text-centered bs-subhead">BIMScript-to-BIM Mapping</h3>
+    <div class="table-container">
     <table class="table is-fullwidth bs-table">
       <thead><tr><th>BIMScript</th><th>Revit API target</th><th>IFC entity / property set</th></tr></thead>
       <tbody>
@@ -328,6 +356,7 @@
         <tr><td><code>condition=&hellip;</code></td><td>shared parameter (custom)</td><td>custom Pset (e.g. <code>Pset_Condition</code>)</td></tr>
       </tbody>
     </table>
+    </div>
   </div>
 </section>
 
@@ -339,7 +368,7 @@
       ground-truth elements; attributes only over elements matched within 10&nbsp;cm, so coverage should be read
       alongside them. Latency is batch&nbsp;1 with GraphStep on one L40S.</p>
     <div class="table-container">
-    <table class="table is-fullwidth bs-table">
+    <table class="table is-fullwidth bs-table bs-table-wide">
       <thead><tr><th>Model</th><th>F1@5cm</th><th>AvgF1</th><th>Cov.</th>
         <th>Mat. acc.</th><th>Cond. acc.</th><th>Params</th><th>s/scene</th></tr></thead>
       <tbody>
@@ -446,7 +475,7 @@
 
 <footer class="footer bs-footer">
   <div class="container is-max-desktop has-text-centered">
-    <p>Page source in <code>docs/</code> of this repository. Template adapted from the
+    <p>Page source in <code>docs/</code> of this <a href="https://github.com/BIMScriptWorld/BIMScript" target="_blank">repository</a>. Template adapted from the
       <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">Nerfies</a> academic project page,
       licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.</p>
   </div>
