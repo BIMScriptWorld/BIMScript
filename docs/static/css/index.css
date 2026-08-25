@@ -69,11 +69,12 @@ body{font-family:'Noto Sans','Google Sans',system-ui,sans-serif;color:var(--ink)
 
 /* ---------- cards ---------- */
 .bs-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1.15rem 1.25rem;height:100%;
+  display:flex;flex-direction:column;
   box-shadow:0 1px 3px rgba(20,26,36,.05);}
 .bs-card-k{font-weight:700;color:var(--accent);margin-bottom:.45rem;font-size:1.05rem;}
 .bs-card p{color:#39424e;line-height:1.6;font-size:.95rem;}
 .bs-soon{position:relative;opacity:.85;}
-.bs-soon .tag{margin-top:.7rem;background:#eef1f5;color:var(--muted);}
+.bs-soon .tag{background:#eef1f5;color:var(--muted);}
 
 .bs-abstract p{line-height:1.75;text-align:justify;}
 
@@ -153,3 +154,13 @@ body{font-family:'Noto Sans','Google Sans',system-ui,sans-serif;color:var(--ink)
   margin-top:.5rem;line-height:1.45;}
 .bs-videos-note{color:var(--muted);font-size:.84rem;text-align:center;margin-top:.7rem;}
 @media(max-width:768px){.bs-videos{grid-template-columns:1fr;}}
+
+/* released-repo link inside a Code & data card */
+.bs-repo{font-size:.88rem;font-weight:600;color:var(--accent);text-decoration:none;}
+.bs-repo:hover{text-decoration:underline;}
+
+/* Code & data: pin each card's footer to the bottom and space it off the
+   description. Targets the card's last element, so it works whether that is a
+   bare <a class="bs-repo">, a <span class="tag">, or a <p> wrapping either. */
+#code .bs-card > :last-child{margin-top:auto;padding-top:0rem;margin-bottom:0;}
+#code .bs-card > p:last-child{align-self:flex-start;}

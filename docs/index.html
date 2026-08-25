@@ -11,12 +11,12 @@
 <meta property="og:image" content="https://BIMScriptWorld.github.io/BIMScript/static/images/teaser_c_layout3d.jpg">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="static/images/icon.png">
-<link rel="apple-touch-icon" href="static/images/icon_1024.png">
+<link rel="icon" href="static/images/icon.png?v=3">
+<link rel="apple-touch-icon" href="static/images/icon_1024.png?v=3">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;600&display=swap">
-<link rel="stylesheet" href="static/css/index.css">
+<link rel="stylesheet" href="static/css/index.css?v=3">
 
 </head>
 <body>
@@ -40,7 +40,7 @@
       </div>
 
       <div class="bs-buttons">
-        <a class="button is-rounded is-dark" href="https://arxiv.org/abs/ARXIV_ID" target="_blank">
+        <a class="button is-rounded is-dark" href="https://arxiv.org/abs/2608.21447" target="_blank">
           <span class="icon"><i class="ai ai-arxiv"></i><i class="fas fa-file-lines"></i></span><span>arXiv</span></a>
         <a class="button is-rounded is-dark" href="paper/BIMScript_arxiv_2026.pdf" target="_blank">
           <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span></a>
@@ -48,8 +48,8 @@
           <span class="icon"><i class="fas fa-play"></i></span><span>Video</span></a>
         <span class="button is-rounded is-dark is-soon">
           <span class="icon"><i class="fab fa-github"></i></span><span>Code &mdash; coming soon</span></span>
-        <span class="button is-rounded is-dark is-soon">
-          <span class="icon"><i class="fas fa-cubes"></i></span><span>Revit add-in &mdash; coming soon</span></span>
+        <a class="button is-rounded is-dark" href="https://github.com/BIMScriptWorld/BIMScript2Revit" target="_blank">
+            <span class="icon"><i class="fas fa-cubes"></i></span><span>Revit add-in &mdash; BIMScript2Revit</span></a>
       </div>
     </div>
   </div>
@@ -59,7 +59,7 @@
 <nav class="bs-nav" id="bs-nav">
   <div class="container is-max-desktop">
     <a href="#abstract">Abstract</a><a href="#video">Video</a><a href="#results">Results</a><a href="#program">Program</a>
-    <a href="#method">Method</a><a href="#corpus">Corpus</a><a href="#bim">BIM</a>
+    <a href="#method">Method</a><a href="#bim">BIM</a>
     <a href="#numbers">Numbers</a><a href="#applications">Applications</a>
     <a href="#limitations">Limitations</a><a href="#code">Code &amp; data</a><a href="#cite">Cite</a>
   </div>
@@ -316,9 +316,9 @@
 <section class="section bs-tight" id="corpus">
   <div class="container is-max-desktop">
     <h2 class="title is-4 has-text-centered">A material passport at corpus scale</h2>
-    <p class="bs-sub">Synthetic scenes give exact geometry but no material labels. For every element we gather the
+    <p class="bs-sub">ASE's scenes give exact geometry but no material labels. For every element we gather the
       RGB observations that project onto it and prompt a vision-language model on the resulting crops. Two further
-      cues are computed independently and stored beside the label &mdash; not to supply it, but to measure how far
+      cues are computed independently and stored beside the label; not to supply it, but to measure how far
       it can be trusted.</p>
     <figure class="bs-fig"><img src="static/images/extraction.jpg?v=2" alt="Material passport extraction pipeline">
       <figcaption>Surface points are associated to elements, observing keyframes are projected to cut per-element
@@ -453,9 +453,9 @@
       <div class="column"><div class="bs-card bs-soon">
         <div class="bs-card-k">Material passport</div><p>Extraction pipeline and the corpus.</p>
         <span class="tag">coming soon</span></div></div>
-      <div class="column"><div class="bs-card bs-soon">
-        <div class="bs-card-k">BIMScript2Revit</div><p>pyRevit add-in and IFC4 export.</p>
-        <span class="tag">coming soon</span></div></div>
+      <div class="column"><div class="bs-card">
+          <div class="bs-card-k">BIMScript2Revit</div><p>pyRevit add-in and IFC4 export.</p> 
+          <a class="bs-repo" href="https://github.com/BIMScriptWorld/BIMScript2Revit" target="_blank"><i class="fab fa-github"></i>&nbsp;View on GitHub</a></div></div>
     </div>
   </div>
 </section>
@@ -464,11 +464,14 @@
 <section class="section bs-tight" id="cite">
   <div class="container is-max-desktop">
     <h2 class="title is-4 has-text-centered">Citation</h2>
-    <pre class="bs-bibtex"><code>@article{naikade2026bimscript,
+    <pre class="bs-bibtex"><code>@misc{naikade2026bimscript,
   title   = {BIMScript: Material-Aware Structured Scene Programs for BIM Ingestion},
   author  = {Naikade, Prakash Kondibhau and Moeslund, Thomas B. and M{\o}gelmose, Andreas},
-  journal = {arXiv preprint arXiv:ARXIV_ID},
-  year    = {2026}
+  year={2026},
+  eprint={2608.21447},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2608.21447},
 }</code></pre>
   </div>
 </section>
@@ -481,6 +484,6 @@
   </div>
 </footer>
 
-<script src="static/js/index.js"></script>
+<script src="static/js/index.js?v=3"></script>
 </body>
 </html>
